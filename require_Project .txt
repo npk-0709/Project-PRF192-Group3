@@ -1,0 +1,48 @@
+1. Product Management: - Add / edit / delete product records. - Product information example: 
+Struct Product { 
+char[15] id; 
+char[50] name; 
+int quantity; 
+char[30] stockName; 
+float unitPrice; 
+}; 
+2. Product statistics by stock name: - Allows entering title for each product. - Uses struct array to manage products. - Statistics number of products per stock name. 
+Page 5 of 6 
+- Search by product name (part of the name, case insensitive) or id. 
+3. Search and Sorting: - Sort product by name, quantity, or unit Price. 
+4. Console-Based User Interface: - Design a simple and intuitive text-based menu system. 
+5. File I/O: - Load and save data from/to text or binary files. 
+6. Functional Programming: - Divide the program into .c / .h files, these files contain functions to handle the 
+functions: add, delete, edit, sort and search. 
+7. Advanced Features: - Optimize add, delete, edit, sort and search operations. 
+Technical Requirements: 
+• Organize code into multiple .c and .h files (Modular Programming). 
+• Prepare a presentation explaining architecture and implementation choices. 
+• Follow best practices for memory safety and optimization.
+
+
+Menu & Main Flow
+displayMenu()  //show Menu
+getUserChoice()  //Click to  select the function you want to use
+returnChoice() // return to previous selection
+exitProgram() // exit the program
+Product CRUD
+addProduct()         // Add new product record
+deleteProduct()      // Delete product by ID
+updateProduct()      // Edit product information
+viewAllProducts()    // Display all products in the list
+ Soft and Search
+searchProductByID()     // Find product by ID
+searchProductByName()   // Find product by (part of) name, case insensitive
+sortProductsByName()    // Sort products alphabetically by name
+sortProductsByQuantity() // Sort by quantity (increasing/decreasing)
+sortProductsByPrice()   // Sort by unit price (increasing/decreasing)
+Product Management
+inputProductInfo()   // Input all details of a product (ID, name, quantity, stock name, unit price)
+calculateTotalValue() // Optional: Calculate total stock value (quantity × unit price)
+statisticByStock()   // Count number of products per stock name
+File I/O
+saveToFile() //Save data to file
+loadFromFile() //Read data from file
+	* Validation & Exception Handling
+* validateInput() //Input validation
