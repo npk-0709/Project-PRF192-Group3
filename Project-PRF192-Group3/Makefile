@@ -1,6 +1,6 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -I./src
-SRC = src/main.c src/menu.c src/product.c src/crud.c src/search.c src/sort.c src/statistics.c src/fileio.c src/validation.c
+CFLAGS = -Wall -Wextra -std=c89 -I./src
+SRC = src/main.c
 OBJ = $(SRC:.c=.o)
 TARGET = product_management
 

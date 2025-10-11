@@ -1,5 +1,0 @@
-The `products.dat` file is intended to store product data in binary format. Since this file is not meant to contain human-readable text, it will be left empty initially, as the data will be written to it by the program during runtime.
-
-Here is the content for the `data/products.dat` file:
-
-// This file is intentionally left blank. It will be populated with product data in binary format during program execution.

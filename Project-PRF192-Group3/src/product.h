@@ -1,4 +1,3 @@
-// product.h
 #ifndef PRODUCT_H
 #define PRODUCT_H
 
@@ -10,10 +9,4 @@ typedef struct {
     float unitPrice;
 } Product;
 
-// Function declarations
-void inputProductInfo(Product *product);
-void displayProduct(const Product *product);
-void calculateTotalValue(const Product *product, float *totalValue);
-void statisticByStock(Product *products, int productCount);
-
-#endif // PRODUCT_H
+#endif
