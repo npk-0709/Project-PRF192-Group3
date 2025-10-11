@@ -2,9 +2,18 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include "product.h"
+
 #define DATA_FILE "products.dat"
 #define MAX_PRODUCTS 100
+
+typedef struct {
+    char id[15];
+    char name[50];
+    int quantity;
+    char stockName[30];
+    float unitPrice;
+} Product;
+
 
 // Product functions
 void inputProductInfo(Product *product);
