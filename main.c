@@ -14,18 +14,22 @@ typedef struct {
     float unitPrice;
 } Product;
 
+// Validation type enum
+typedef enum {
+    VALIDATE_PRODUCT_ID,
+    VALIDATE_PRODUCT_NAME,
+    VALIDATE_QUANTITY,
+    VALIDATE_STOCK_NAME,
+    VALIDATE_UNIT_PRICE
+} ValidationType;
 
 // Product functions
 void inputProductInfo(Product *product);
 void displayProduct(const Product *product);
 float calculateTotalValue(const Product *product);
 
-// Validation functions
-int validateProductID(const char* id);
-int validateProductName(const char* name);
-int validateQuantity(int quantity);
-int validateStockName(const char* stockName);
-int validateUnitPrice(float unitPrice);
+// Unified validation function
+int validateInput(ValidationType type, const void *value);
 
 // CRUD functions
 void addProduct(Product *products, int *count);
@@ -57,45 +61,58 @@ int getUserChoice();
 void returnChoice();
 void exitProgram();
 
-// ========== VALIDATION IMPLEMENTATIONS ==========
-int validateProductID(const char *id) {
-    if (strlen(id) == 0 || strlen(id) > 14) {
-        printf("Invalid Product ID. Must be 1-14 characters.\n");
-        return 0;
+// ========== UNIFIED VALIDATION IMPLEMENTATION ==========
+int validateInput(ValidationType type, const void *value) {
+    switch (type) {
+        case VALIDATE_PRODUCT_ID: {
+            const char *id = (const char *)value;
+            if (strlen(id) == 0 || strlen(id) > 14) {
+                printf("Invalid Product ID. Must be 1-14 characters.\n");
+                return 0;
+            }
+            return 1;
+        }
+        
+        case VALIDATE_PRODUCT_NAME: {
+            const char *name = (const char *)value;
+            if (strlen(name) == 0 || strlen(name) > 49) {
+                printf("Invalid Product Name. Must be 1-49 characters.\n");
+                return 0;
+            }
+            return 1;
+        }
+        
+        case VALIDATE_QUANTITY: {
+            int quantity = *(const int *)value;
+            if (quantity < 0) {
+                printf("Invalid Quantity. Cannot be negative.\n");
+                return 0;
+            }
+            return 1;
+        }
+        
+        case VALIDATE_STOCK_NAME: {
+            const char *stockName = (const char *)value;
+            if (strlen(stockName) == 0 || strlen(stockName) > 29) {
+                printf("Invalid Stock Name. Must be 1-29 characters.\n");
+                return 0;
+            }
+            return 1;
+        }
+        
+        case VALIDATE_UNIT_PRICE: {
+            float unitPrice = *(const float *)value;
+            if (unitPrice < 0) {
+                printf("Invalid Unit Price. Cannot be negative.\n");
+                return 0;
+            }
+            return 1;
+        }
+        
+        default:
+            printf("Unknown validation type.\n");
+            return 0;
     }
-    return 1;
-}
-
-int validateProductName(const char *name) {
-    if (strlen(name) == 0 || strlen(name) > 49) {
-        printf("Invalid Product Name. Must be 1-49 characters.\n");
-        return 0;
-    }
-    return 1;
-}
-
-int validateQuantity(int quantity) {
-    if (quantity < 0) {
-        printf("Invalid Quantity. Cannot be negative.\n");
-        return 0;
-    }
-    return 1;
-}
-
-int validateStockName(const char *stockName) {
-    if (strlen(stockName) == 0 || strlen(stockName) > 29) {
-        printf("Invalid Stock Name. Must be 1-29 characters.\n");
-        return 0;
-    }
-    return 1;
-}
-
-int validateUnitPrice(float unitPrice) {
-    if (unitPrice < 0) {
-        printf("Invalid Unit Price. Cannot be negative.\n");
-        return 0;
-    }
-    return 1;
 }
 
 // ========== PRODUCT IMPLEMENTATIONS ==========
@@ -108,20 +125,20 @@ void inputProductInfo(Product *product) {
         printf("Enter product ID (max 14 chars): ");
         scanf("%14s", tempId);
         getchar();
-    } while (!validateProductID(tempId));
+    } while (!validateInput(VALIDATE_PRODUCT_ID, tempId));
     strcpy(product->id, tempId);
     
     do {
         printf("Enter product name (max 49 chars): ");
         fgets(tempName, sizeof(tempName), stdin);
         tempName[strcspn(tempName, "\n")] = 0;
-    } while (!validateProductName(tempName));
+    } while (!validateInput(VALIDATE_PRODUCT_NAME, tempName));
     strcpy(product->name, tempName);
     
     do {
         printf("Enter quantity: ");
         scanf("%d", &tempQuantity);
-    } while (!validateQuantity(tempQuantity));
+    } while (!validateInput(VALIDATE_QUANTITY, &tempQuantity));
     product->quantity = tempQuantity;
     
     getchar();
@@ -129,13 +146,13 @@ void inputProductInfo(Product *product) {
         printf("Enter stock name (max 29 chars): ");
         fgets(tempStockName, sizeof(tempStockName), stdin);
         tempStockName[strcspn(tempStockName, "\n")] = 0;
-    } while (!validateStockName(tempStockName));
+    } while (!validateInput(VALIDATE_STOCK_NAME, tempStockName));
     strcpy(product->stockName, tempStockName);
     
     do {
         printf("Enter unit price: ");
         scanf("%f", &tempUnitPrice);
-    } while (!validateUnitPrice(tempUnitPrice));
+    } while (!validateInput(VALIDATE_UNIT_PRICE, &tempUnitPrice));
     product->unitPrice = tempUnitPrice;
 }
 
