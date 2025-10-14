@@ -1,0 +1,43 @@
+flowchart TB
+    Start(["Start"]) --> Switch{"Check<br>Validation Type"}
+    Switch -- VALIDATE_PRODUCT_ID --> CastID["Cast value to char*"]
+    Switch -- VALIDATE_PRODUCT_NAME --> CastName["Cast value to char*"]
+    Switch -- VALIDATE_QUANTITY --> CastQty["Cast value to int*<br>Dereference to get quantity"]
+    Switch -- VALIDATE_STOCK_NAME --> CastStock["Cast value to char*"]
+    Switch -- VALIDATE_UNIT_PRICE --> CastPrice["Cast value to float*<br>Dereference to get unitPrice"]
+    Switch -- default --> PrintUnknown["Print: Unknown<br>validation type."]
+    CastID --> CheckIDEmpty{"strlen id == 0<br>OR<br>strlen id &gt; 14?"}
+    CheckIDEmpty -- Yes --> PrintIDError["Print: Invalid Product ID.<br>Must be 1-14 characters."]
+    CheckIDEmpty -- No --> Return1A["Return 1"]
+    PrintIDError --> Return0A["Return 0"]
+    CastName --> CheckNameEmpty{"strlen name == 0<br>OR<br>strlen name &gt; 49?"}
+    CheckNameEmpty -- Yes --> PrintNameError["Print: Invalid Product Name.<br>Must be 1-49 characters."]
+    CheckNameEmpty -- No --> Return1B["Return 1"]
+    PrintNameError --> Return0B["Return 0"]
+    CastQty --> CheckQtyNeg{"quantity &lt; 0?"}
+    CheckQtyNeg -- Yes --> PrintQtyError["Print: Invalid Quantity.<br>Cannot be negative."]
+    CheckQtyNeg -- No --> Return1C["Return 1"]
+    PrintQtyError --> Return0C["Return 0"]
+    CastStock --> CheckStockEmpty{"strlen stockName == 0<br>OR<br>strlen stockName &gt; 29?"}
+    CheckStockEmpty -- Yes --> PrintStockError["Print: Invalid Stock Name.<br>Must be 1-29 characters."]
+    CheckStockEmpty -- No --> Return1D["Return 1"]
+    PrintStockError --> Return0D["Return 0"]
+    CastPrice --> CheckPriceNeg{"unitPrice &lt; 0?"}
+    CheckPriceNeg -- Yes --> PrintPriceError["Print: Invalid Unit Price.<br>Cannot be negative."]
+    CheckPriceNeg -- No --> Return1E["Return 1"]
+    PrintPriceError --> Return0E["Return 0"]
+    PrintUnknown --> Return0F["Return 0"]
+    Return1A --> End(["End"])
+    Return0A --> End
+    Return1B --> End
+    Return0B --> End
+    Return1C --> End
+    Return0C --> End
+    Return1D --> End
+    Return0D --> End
+    Return1E --> End
+    Return0E --> End
+    Return0F --> End
+
+
+
