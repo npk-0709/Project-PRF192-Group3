@@ -16,6 +16,68 @@ typedef struct {
     char stockName[MAX_STOCK_NAME_LENGTH];
     float unitPrice;
 } Product;
+
+typedef enum {
+    VALIDATE_PRODUCT_ID,
+    VALIDATE_PRODUCT_NAME,
+    VALIDATE_QUANTITY,
+    VALIDATE_STOCK_NAME,
+    VALIDATE_UNIT_PRICE
+} ValidationType;
+
+// Validation function
+int validateInput(ValidationType type, const void *value) {
+    switch (type) {
+        case VALIDATE_PRODUCT_ID: {
+            const char *id = (const char *)value;
+            if (strlen(id) == 0 || strlen(id) > 14) {
+                printf("Invalid Product ID. Must be 1-14 characters.\n");
+                return 0;
+            }
+            return 1;
+        }
+        
+        case VALIDATE_PRODUCT_NAME: {
+            const char *name = (const char *)value;
+            if (strlen(name) == 0 || strlen(name) > 49) {
+                printf("Invalid Product Name. Must be 1-49 characters.\n");
+                return 0;
+            }
+            return 1;
+        }
+        
+        case VALIDATE_QUANTITY: {
+            int quantity = *(const int *)value;
+            if (quantity < 0) {
+                printf("Invalid Quantity. Cannot be negative.\n");
+                return 0;
+            }
+            return 1;
+        }
+        
+        case VALIDATE_STOCK_NAME: {
+            const char *stockName = (const char *)value;
+            if (strlen(stockName) == 0 || strlen(stockName) > 29) {
+                printf("Invalid Stock Name. Must be 1-29 characters.\n");
+                return 0;
+            }
+            return 1;
+        }
+        
+        case VALIDATE_UNIT_PRICE: {
+            float unitPrice = *(const float *)value;
+            if (unitPrice < 0) {
+                printf("Invalid Unit Price. Cannot be negative.\n");
+                return 0;
+            }
+            return 1;
+        }
+        
+        default:
+            printf("Unknown validation type.\n");
+            return 0;
+    }
+}
 // Display product information in table format
 void displayProduct(Product *p) {
     float totalValue = p->quantity * p->unitPrice;
@@ -105,24 +167,56 @@ void searchProductByName(int productCount, Product *products[]){
 
 // Input product information from user
 void inputProductInfo(Product *p) {
-    printf("Enter product ID: ");
-    scanf("%s", p->id);
+    int valid = 0;
     
-    printf("Enter product name: ");
-    getchar();
-    fgets(p->name, MAX_NAME_LENGTH, stdin);
-    p->name[strcspn(p->name, "\n")] = '\0';
+    // Validate Product ID
+    do {
+        printf("Enter product ID: ");
+        scanf("%s", p->id);
+        valid = validateInput(VALIDATE_PRODUCT_ID, p->id);
+    } while (!valid);
     
-    printf("Enter quantity: ");
-    scanf("%d", &(p->quantity));
+    // Validate Product Name
+    do {
+        printf("Enter product name: ");
+        getchar();
+        fgets(p->name, MAX_NAME_LENGTH, stdin);
+        p->name[strcspn(p->name, "\n")] = '\0';
+        valid = validateInput(VALIDATE_PRODUCT_NAME, p->name);
+    } while (!valid);
     
-    printf("Enter stock name: ");
-    getchar();
-    fgets(p->stockName, MAX_STOCK_NAME_LENGTH, stdin);
-    p->stockName[strcspn(p->stockName, "\n")] = '\0';
+    // Validate Quantity
+    do {
+        printf("Enter quantity: ");
+        if (scanf("%d", &(p->quantity)) != 1) {
+            printf("Invalid input! Please enter a number.\n");
+            while (getchar() != '\n'); // Clear input buffer
+            valid = 0;
+            continue;
+        }
+        valid = validateInput(VALIDATE_QUANTITY, &(p->quantity));
+    } while (!valid);
     
-    printf("Enter unit price: ");
-    scanf("%f", &(p->unitPrice));
+    // Validate Stock Name
+    do {
+        printf("Enter stock name: ");
+        getchar();
+        fgets(p->stockName, MAX_STOCK_NAME_LENGTH, stdin);
+        p->stockName[strcspn(p->stockName, "\n")] = '\0';
+        valid = validateInput(VALIDATE_STOCK_NAME, p->stockName);
+    } while (!valid);
+    
+    // Validate Unit Price
+    do {
+        printf("Enter unit price: ");
+        if (scanf("%f", &(p->unitPrice)) != 1) {
+            printf("Invalid input! Please enter a number.\n");
+            while (getchar() != '\n'); // Clear input buffer
+            valid = 0;
+            continue;
+        }
+        valid = validateInput(VALIDATE_UNIT_PRICE, &(p->unitPrice));
+    } while (!valid);
 }
 
 // Add new product to the array
