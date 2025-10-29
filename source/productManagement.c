@@ -138,7 +138,6 @@ void searchProductByName(int productCount, Product *products[]){
     }
     
     printf("Enter product name to search: ");
-    getchar(); 
     fgets(searchName, MAX_NAME_LENGTH, stdin);
     
     searchName[strcspn(searchName, "\n")] = '\0';
@@ -524,7 +523,7 @@ int main() {
     Product products[MAX_PRODUCTS];
     int productCount = 0;
     int choice;
-    char searchId[15], searchName[50];
+    char searchId[15];
 
     productCount = loadFromFile(DATA_FILE, products, MAX_PRODUCTS);
 
@@ -566,10 +565,6 @@ int main() {
                 break;
 
             case 6:
-                printf("Enter Product Name to search: ");
-                getchar();
-                fgets(searchName, sizeof(searchName), stdin);
-                searchName[strcspn(searchName, "\n")] = 0;
                 {
                     Product *productPtrs[MAX_PRODUCTS];
                     for (int i = 0; i < productCount; i++) {
