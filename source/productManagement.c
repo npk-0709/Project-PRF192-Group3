@@ -3,7 +3,7 @@
 #include <string.h>
 #include <ctype.h>
 
-#define DATA_FILE "products.dat"
+#define DATA_FILE "products.txt"
 #define MAX_PRODUCTS 100
 #define MAX_ID_LENGTH 15
 #define MAX_NAME_LENGTH 50
@@ -393,37 +393,66 @@ void sortProductsByPrice(Product *products, int count, int ascending) {
     }
 }
 
-// Save products to binary file
+// Save products to text file
 void saveToFile(const char *filename, Product *products, int productCount) {
-    FILE *file = fopen(filename, "wb");
+    FILE *file = fopen(filename, "w");
     if (file == NULL) {
         printf("Error opening file for writing.\n");
         return;
     }
     
-    fwrite(&productCount, sizeof(int), 1, file);
-    fwrite(products, sizeof(Product), productCount, file);
+    // Write the number of products
+    fprintf(file, "%d\n", productCount);
+    
+    // Write each product's information
+    for (int i = 0; i < productCount; i++) {
+        fprintf(file, "%s\n", products[i].id);
+        fprintf(file, "%s\n", products[i].name);
+        fprintf(file, "%d\n", products[i].quantity);
+        fprintf(file, "%s\n", products[i].stockName);
+        fprintf(file, "%.2f\n", products[i].unitPrice);
+    }
+    
     fclose(file);
     printf("Data saved successfully to %s (%d products).\n", filename, productCount);
 }
 
-// Load products from binary file
+// Load products from text file
 int loadFromFile(const char *filename, Product *products, int maxProducts) {
-    FILE *file = fopen(filename, "rb");
+    FILE *file = fopen(filename, "r");
     if (file == NULL) {
         printf("File not found. Starting with empty product list.\n");
         return 0;
     }
     
     int count;
-    fread(&count, sizeof(int), 1, file);
+    if (fscanf(file, "%d\n", &count) != 1) {
+        printf("Error reading file format.\n");
+        fclose(file);
+        return 0;
+    }
     
     if (count > maxProducts) {
         printf("Warning: File contains %d products but maximum is %d.\n", count, maxProducts);
         count = maxProducts;
     }
     
-    fread(products, sizeof(Product), count, file);
+    // Read each product's information
+    for (int i = 0; i < count; i++) {
+        if (fgets(products[i].id, MAX_ID_LENGTH, file) == NULL) break;
+        products[i].id[strcspn(products[i].id, "\n")] = '\0';
+        
+        if (fgets(products[i].name, MAX_NAME_LENGTH, file) == NULL) break;
+        products[i].name[strcspn(products[i].name, "\n")] = '\0';
+        
+        if (fscanf(file, "%d\n", &products[i].quantity) != 1) break;
+        
+        if (fgets(products[i].stockName, MAX_STOCK_NAME_LENGTH, file) == NULL) break;
+        products[i].stockName[strcspn(products[i].stockName, "\n")] = '\0';
+        
+        if (fscanf(file, "%f\n", &products[i].unitPrice) != 1) break;
+    }
+    
     fclose(file);
     printf("Data loaded successfully from %s (%d products).\n", filename, count);
     return count;
@@ -433,7 +462,7 @@ int loadFromFile(const char *filename, Product *products, int maxProducts) {
 void displayMenu() {
     printf("\n");
     printf("==============================================\n");
-    printf("=   Product Management System - Main Menu   =\n");
+    printf("=   Product Management System - Main Menu    =\n");
     printf("==============================================\n");
     printf("=  1. Add Product                            =\n");
     printf("=  2. Delete Product                         =\n");
@@ -444,7 +473,7 @@ void displayMenu() {
     printf("=  7. Sort Products                          =\n");
     printf("=  8. Statistics by Stock Name               =\n");
     printf("=  9. Save to File                           =\n");
-    printf("=  10. Load from File                        =\n");
+    printf("=  10.Load from File                        =\n");
     printf("=  0. Exit                                   =\n");
     printf("==============================================\n");
 }
@@ -453,7 +482,7 @@ void displayMenu() {
 void displaySortMenu() {
     printf("\n");
     printf("==============================================\n");
-    printf("=          Sort Products - Submenu          =\n");
+    printf("=          Sort Products - Submenu           =\n");
     printf("==============================================\n");
     printf("=  1. Sort by Name (A-Z)                     =\n");
     printf("=  2. Sort by Quantity (Ascending)           =\n");
@@ -482,7 +511,7 @@ void returnChoice() {
     getchar();
 }
 
-// Display exit message
+// Display exit 
 void exitProgram() {
     printf("\n==============================================\n");
     printf("=   Thank you for using the system!          =\n");
@@ -490,7 +519,7 @@ void exitProgram() {
     printf("==============================================\n");
 }
 
-// Main program loop
+// Main program 
 int main() {
     Product products[MAX_PRODUCTS];
     int productCount = 0;
