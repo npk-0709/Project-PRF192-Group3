@@ -81,7 +81,7 @@ int validateInput(ValidationType type, const void *value) {
 // Display product information in table format
 void displayProduct(Product *p) {
     float totalValue = p->quantity * p->unitPrice;
-    printf("| %-10s | %-20s | %-8d | %-15s | $%-10.2f | $%-12.2f |\n",
+    printf("| %-10s | %-20s | %-8d | %-15s | %-10.2f VND | %-12.2f VND |\n",
            p->id, p->name, p->quantity, p->stockName, p->unitPrice, totalValue);
 }
 
