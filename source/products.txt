@@ -1,4 +1,4 @@
-99
+98
 1
 ACER Aspire 3
 450
@@ -45,7 +45,7 @@ HP Spectre x360
 Warehouse D
 37990000.00
 10
-LENOVO ThinkPad X1 Carbon
+LENOVO ThinkPad X Carbon
 110
 Warehouse E
 44990000.00
@@ -244,11 +244,6 @@ ACER Aspire Vero
 320
 Warehouse D
 16990000.00
-50
-DELL Inspiron 16 Plus
-200
-Warehouse E
-25990000.00
 51
 HP Pavilion Aero 13
 340
