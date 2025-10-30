@@ -202,16 +202,24 @@ void inputProductInfo(Product *p)
     do
     {
         printf("Enter product ID: ");
-        fgets(p->id, MAX_ID_LENGTH + 1, stdin);
-        p->id[strcspn(p->id, "\n")] = '\0'; // Remove newline
-
-        // Clear remaining input if user entered more than allowed
-        if (strlen(p->id) == MAX_ID_LENGTH - 1 && p->id[MAX_ID_LENGTH - 2] != '\n')
+        if (fgets(p->id, MAX_ID_LENGTH + 1, stdin) == NULL)
         {
+            printf("Error reading input.\n");
+            continue;
+        }
+
+        // Check if we need to clear the buffer (if last char is not newline and string is at max)
+        size_t len = strlen(p->id);
+        if (len > 0 && p->id[len - 1] != '\n')
+        {
+            // Buffer was filled, need to clear remaining input
             int c;
             while ((c = getchar()) != '\n' && c != EOF)
                 ;
         }
+
+        // Remove newline if present
+        p->id[strcspn(p->id, "\n")] = '\0';
 
         valid = validateInput(VALIDATE_PRODUCT_ID, p->id);
     } while (!valid);
@@ -220,16 +228,23 @@ void inputProductInfo(Product *p)
     do
     {
         printf("Enter product name: ");
-        fgets(p->name, MAX_NAME_LENGTH + 1, stdin);
-        p->name[strcspn(p->name, "\n")] = '\0';
+        if (fgets(p->name, MAX_NAME_LENGTH + 1, stdin) == NULL)
+        {
+            printf("Error reading input.\n");
+            continue;
+        }
 
-        // Clear remaining input if user entered more than allowed
-        if (strlen(p->name) == MAX_NAME_LENGTH - 1 && p->name[MAX_NAME_LENGTH - 2] != '\n')
+        // Check if we need to clear the buffer
+        size_t len = strlen(p->name);
+        if (len > 0 && p->name[len - 1] != '\n')
         {
             int c;
             while ((c = getchar()) != '\n' && c != EOF)
                 ;
         }
+
+        // Remove newline if present
+        p->name[strcspn(p->name, "\n")] = '\0';
 
         valid = validateInput(VALIDATE_PRODUCT_NAME, p->name);
     } while (!valid);
@@ -238,14 +253,31 @@ void inputProductInfo(Product *p)
     do
     {
         printf("Enter quantity: ");
-        if (scanf("%d", &(p->quantity)) != 1)
+        char quantityInput[50];
+        fgets(quantityInput, sizeof(quantityInput), stdin);
+        quantityInput[strcspn(quantityInput, "\n")] = '\0';
+
+        // Clear remaining input if user entered more than allowed
+        if (strlen(quantityInput) == sizeof(quantityInput) - 1)
+        {
+            int c;
+            while ((c = getchar()) != '\n' && c != EOF)
+                ;
+        }
+
+        // Try to convert string to integer
+        char *endptr;
+        long num = strtol(quantityInput, &endptr, 10);
+
+        // Check if conversion was successful and the entire string was a valid number
+        if (*endptr != '\0' || endptr == quantityInput)
         {
             printf("Invalid input! Please enter a number.\n");
-            while (getchar() != '\n')
-                ; // Clear input buffer
             valid = 0;
             continue;
         }
+
+        p->quantity = (int)num;
         valid = validateInput(VALIDATE_QUANTITY, &(p->quantity));
     } while (!valid);
 
@@ -253,16 +285,23 @@ void inputProductInfo(Product *p)
     do
     {
         printf("Enter stock name: ");
-        fgets(p->stockName, MAX_STOCK_NAME_LENGTH + 1, stdin);
-        p->stockName[strcspn(p->stockName, "\n")] = '\0';
+        if (fgets(p->stockName, MAX_STOCK_NAME_LENGTH + 1, stdin) == NULL)
+        {
+            printf("Error reading input.\n");
+            continue;
+        }
 
-        // Clear remaining input if user entered more than allowed
-        if (strlen(p->stockName) == MAX_STOCK_NAME_LENGTH - 1 && p->stockName[MAX_STOCK_NAME_LENGTH - 2] != '\n')
+        // Check if we need to clear the buffer
+        size_t len = strlen(p->stockName);
+        if (len > 0 && p->stockName[len - 1] != '\n')
         {
             int c;
             while ((c = getchar()) != '\n' && c != EOF)
                 ;
         }
+
+        // Remove newline if present
+        p->stockName[strcspn(p->stockName, "\n")] = '\0';
 
         valid = validateInput(VALIDATE_STOCK_NAME, p->stockName);
     } while (!valid);
