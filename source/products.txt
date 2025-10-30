@@ -1,6 +1,496 @@
+99
 1
-1
-1
-1
-1
-1.00
+ACER Aspire 3
+450
+Warehouse A
+12990000.00
+2
+DELL Inspiron 15 3520
+320
+Warehouse B
+15490000.00
+3
+HP Pavilion 15
+280
+Warehouse C
+16990000.00
+4
+LENOVO IdeaPad 3
+510
+Warehouse D
+11990000.00
+5
+ASUS VivoBook 15
+390
+Warehouse E
+13990000.00
+6
+MSI GF63 Thin
+220
+Warehouse A
+18990000.00
+7
+ACER Nitro 5
+180
+Warehouse B
+22990000.00
+8
+DELL XPS 13
+140
+Warehouse C
+32990000.00
+9
+HP Spectre x360
+95
+Warehouse D
+37990000.00
+10
+LENOVO ThinkPad X1 Carbon
+110
+Warehouse E
+44990000.00
+11
+ASUS ROG Strix G15
+85
+Warehouse A
+36990000.00
+12
+MSI Katana GF66
+160
+Warehouse B
+25990000.00
+13
+ACER Predator Helios 300
+75
+Warehouse C
+41990000.00
+14
+DELL Alienware m15
+60
+Warehouse D
+58990000.00
+15
+HP Omen 16
+130
+Warehouse E
+34990000.00
+16
+LENOVO Legion 5
+200
+Warehouse A
+29990000.00
+17
+ASUS ZenBook 14
+170
+Warehouse B
+24990000.00
+18
+MSI Modern 14
+290
+Warehouse C
+15990000.00
+19
+ACER Swift 3
+310
+Warehouse D
+17990000.00
+20
+DELL Latitude 7420
+120
+Warehouse E
+28990000.00
+21
+HP Envy 13
+150
+Warehouse A
+21990000.00
+22
+LENOVO Yoga Slim 7
+240
+Warehouse B
+26990000.00
+23
+ASUS TUF Gaming A15
+190
+Warehouse C
+23990000.00
+24
+MSI Bravo 15
+270
+Warehouse D
+20990000.00
+25
+ACER TravelMate P2
+350
+Warehouse E
+14990000.00
+26
+DELL Vostro 14
+300
+Warehouse A
+17990000.00
+27
+HP ProBook 450
+260
+Warehouse B
+19990000.00
+28
+LENOVO IdeaPad Gaming 3
+210
+Warehouse C
+21990000.00
+29
+ASUS ExpertBook B9
+80
+Warehouse D
+49990000.00
+30
+MSI Pulse GL66
+140
+Warehouse E
+31990000.00
+31
+ACER Aspire 5
+380
+Warehouse A
+15990000.00
+32
+DELL Inspiron 14
+330
+Warehouse B
+16990000.00
+33
+HP EliteBook 840
+100
+Warehouse C
+39990000.00
+34
+LENOVO ThinkBook 15
+280
+Warehouse D
+18990000.00
+35
+ASUS Chromebook Flip
+400
+Warehouse E
+10990000.00
+36
+MSI Creator Z16
+70
+Warehouse A
+55990000.00
+37
+ACER Enduro Urban
+220
+Warehouse B
+13990000.00
+38
+DELL Precision 5560
+90
+Warehouse C
+46990000.00
+39
+HP ZBook Firefly
+110
+Warehouse D
+42990000.00
+40
+LENOVO Legion 7
+65
+Warehouse E
+51990000.00
+41
+ASUS ProArt StudioBook
+55
+Warehouse A
+59990000.00
+42
+MSI GE76 Raider
+50
+Warehouse B
+64990000.00
+43
+ACER ConceptD 7
+60
+Warehouse C
+57990000.00
+44
+DELL G15
+250
+Warehouse D
+24990000.00
+45
+HP Victus 16
+230
+Warehouse E
+22990000.00
+46
+LENOVO LOQ 15
+290
+Warehouse A
+19990000.00
+47
+ASUS Vivobook Pro 16
+180
+Warehouse B
+27990000.00
+48
+MSI Crosshair 15
+160
+Warehouse C
+28990000.00
+49
+ACER Aspire Vero
+320
+Warehouse D
+16990000.00
+50
+DELL Inspiron 16 Plus
+200
+Warehouse E
+25990000.00
+51
+HP Pavilion Aero 13
+340
+Warehouse A
+18990000.00
+52
+LENOVO IdeaPad Slim 5
+360
+Warehouse B
+14990000.00
+53
+ASUS ROG Zephyrus G14
+120
+Warehouse C
+39990000.00
+54
+MSI Stealth GS66
+100
+Warehouse D
+45990000.00
+55
+ACER Triton 300
+130
+Warehouse E
+34990000.00
+56
+DELL XPS 15
+110
+Warehouse A
+38990000.00
+57
+HP Envy x360 15
+170
+Warehouse B
+26990000.00
+58
+LENOVO ThinkPad P15
+80
+Warehouse C
+48990000.00
+59
+ASUS Zenbook Pro Duo
+70
+Warehouse D
+52990000.00
+60
+MSI WS66
+75
+Warehouse E
+50990000.00
+61
+ACER Spin 3
+300
+Warehouse A
+13990000.00
+62
+DELL Latitude 9520
+95
+Warehouse B
+41990000.00
+63
+HP Spectre x360 14
+130
+Warehouse C
+35990000.00
+64
+LENOVO Yoga 9i
+105
+Warehouse D
+43990000.00
+65
+ASUS ExpertBook B5
+220
+Warehouse E
+21990000.00
+66
+MSI Summit E16 Flip
+85
+Warehouse A
+47990000.00
+67
+ACER Swift X
+190
+Warehouse B
+23990000.00
+68
+DELL Vostro 15
+280
+Warehouse C
+15990000.00
+69
+HP ProBook 445
+310
+Warehouse D
+17990000.00
+70
+LENOVO IdeaPad 5 Pro
+240
+Warehouse E
+20990000.00
+71
+ASUS TUF Dash F15
+200
+Warehouse A
+25990000.00
+72
+MSI GF75 Thin
+260
+Warehouse B
+19990000.00
+73
+ACER Nitro 7
+150
+Warehouse C
+27990000.00
+74
+DELL Gaming G16
+180
+Warehouse D
+29990000.00
+75
+HP Omen 15
+140
+Warehouse E
+31990000.00
+76
+LENOVO Legion 5 Pro
+120
+Warehouse A
+35990000.00
+77
+ASUS ROG Flow X13
+90
+Warehouse B
+41990000.00
+78
+MSI Alpha 15
+210
+Warehouse C
+22990000.00
+79
+ACER Aspire 7
+330
+Warehouse D
+18990000.00
+80
+DELL Inspiron 13
+350
+Warehouse E
+14990000.00
+81
+HP Pavilion Gaming 15
+270
+Warehouse A
+21990000.00
+82
+LENOVO ThinkPad E15
+290
+Warehouse B
+16990000.00
+83
+ASUS VivoBook S15
+310
+Warehouse C
+17990000.00
+84
+MSI Modern 15
+340
+Warehouse D
+13990000.00
+85
+ACER TravelMate Spin
+250
+Warehouse E
+15990000.00
+86
+DELL Precision 3560
+100
+Warehouse A
+36990000.00
+87
+HP ZBook Studio
+80
+Warehouse B
+45990000.00
+88
+LENOVO ThinkPad X13
+140
+Warehouse C
+32990000.00
+89
+ASUS ZenBook Flip 14
+160
+Warehouse D
+28990000.00
+90
+MSI Prestige 14
+180
+Warehouse E
+24990000.00
+91
+ACER Enduro N3
+220
+Warehouse A
+11990000.00
+92
+DELL Latitude 5420
+200
+Warehouse B
+26990000.00
+93
+HP EliteBook 850
+110
+Warehouse C
+39990000.00
+94
+LENOVO Yoga Slim 7 Pro
+150
+Warehouse D
+30990000.00
+95
+ASUS ROG Strix Scar 15
+70
+Warehouse E
+54990000.00
+96
+MSI GP66 Leopard
+130
+Warehouse A
+33990000.00
+97
+ACER Predator Triton 500
+60
+Warehouse B
+49990000.00
+98
+DELL Alienware x17
+50
+Warehouse C
+67990000.00
+99
+HP Omen 17
+90
+Warehouse D
+38990000.00
