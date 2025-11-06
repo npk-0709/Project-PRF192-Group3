@@ -18,17 +18,19 @@ typedef struct
     float unitPrice;
 } Product;
 
-typedef enum
-{
-    VALIDATE_PRODUCT_ID,
-    VALIDATE_PRODUCT_NAME,
-    VALIDATE_QUANTITY,
-    VALIDATE_STOCK_NAME,
-    VALIDATE_UNIT_PRICE
-} ValidationType;
+#define VALIDATE_PRODUCT_ID 1
+#define VALIDATE_PRODUCT_NAME 2
+#define VALIDATE_QUANTITY 3
+#define VALIDATE_STOCK_NAME 4
+#define VALIDATE_UNIT_PRICE 5
 
-// Validation function
-int validateInput(ValidationType type, const void *value)
+void clearInputBuffer()
+{
+    int c;
+    while ((c = getchar()) != '\n');
+}
+
+int validateInput(int type, const void *value)
 {
     switch (type)
     {
@@ -92,15 +94,13 @@ int validateInput(ValidationType type, const void *value)
         return 0;
     }
 }
-// Display product information in table format
-void displayProduct(Product *p)
+void displayProduct(Product p)
 {
-    float totalValue = p->quantity * p->unitPrice;
+    float totalValue = p.quantity * p.unitPrice;
     printf("| %-10s | %-24s | %-8d | %-15s | %-13.2f VND | %-15.2f VND |\n",
-           p->id, p->name, p->quantity, p->stockName, p->unitPrice, totalValue);
+           p.id, p.name, p.quantity, p.stockName, p.unitPrice, totalValue);
 }
-
-// Convert string to lowercase for case-insensitive search
+// chuyen chuoi thanh chuoi thuong
 void toLowerStr(char *dest, const char *src)
 {
     int i = 0;
@@ -112,8 +112,7 @@ void toLowerStr(char *dest, const char *src)
     dest[i] = '\0';
 }
 
-// Search product by exact ID match
-void searchProductByID(int productCount, Product *products[])
+void searchProductByID(int productCount, Product products[])
 {
     int i, found = 0;
     char searchID[MAX_ID_LENGTH];
@@ -125,11 +124,14 @@ void searchProductByID(int productCount, Product *products[])
     }
 
     printf("Enter product ID to search: ");
-    scanf("%s", searchID);
+    scanf("%14s", searchID);
+    // xoa con lai trong buffer
+    scanf("%*[^\n]");
+    getchar();
 
     for (i = 0; i < productCount; i++)
     {
-        if (strcmp(products[i]->id, searchID) == 0)
+        if (strcmp(products[i].id, searchID) == 0)
         {
             printf("\nPRODUCT FOUND!\n");
             printf("| %-10s | %-24s | %-8s | %-15s | %-15s | %-17s |\n",
@@ -147,8 +149,7 @@ void searchProductByID(int productCount, Product *products[])
     }
 }
 
-// Search product by name (case-insensitive, partial match)
-void searchProductByName(int productCount, Product *products[])
+void searchProductByName(int productCount, Product products[])
 {
     int i, found = 0;
     char searchName[MAX_NAME_LENGTH];
@@ -162,7 +163,8 @@ void searchProductByName(int productCount, Product *products[])
     }
 
     printf("Enter product name to search: ");
-    fgets(searchName, MAX_NAME_LENGTH, stdin);
+    scanf(" %49[^\n]", searchName);
+    clearInputBuffer();
 
     searchName[strcspn(searchName, "\n")] = '\0';
     toLowerStr(lowerName, searchName);
@@ -174,7 +176,7 @@ void searchProductByName(int productCount, Product *products[])
 
     for (i = 0; i < productCount; i++)
     {
-        toLowerStr(lowerProductName, products[i]->name);
+        toLowerStr(lowerProductName, products[i].name);
 
         if (strstr(lowerProductName, lowerName) != NULL)
         {
@@ -193,136 +195,87 @@ void searchProductByName(int productCount, Product *products[])
     }
 }
 
-// Input product information from user
-void inputProductInfo(Product *p)
+Product inputProductInfo(void)
 {
+    Product p;
     int valid = 0;
-
-    // Validate Product ID
+    int c;
     do
     {
         printf("Enter product ID: ");
-        if (fgets(p->id, MAX_ID_LENGTH + 1, stdin) == NULL)
+        if (scanf(" %14s", p.id) != 1)
         {
+            clearInputBuffer();
             printf("Error reading input.\n");
             continue;
         }
+        clearInputBuffer();
 
-        // Check if we need to clear the buffer (if last char is not newline and string is at max)
-        size_t len = strlen(p->id);
-        if (len > 0 && p->id[len - 1] != '\n')
-        {
-            // Buffer was filled, need to clear remaining input
-            int c;
-            while ((c = getchar()) != '\n' && c != EOF)
-                ;
-        }
-
-        // Remove newline if present
-        p->id[strcspn(p->id, "\n")] = '\0';
-
-        valid = validateInput(VALIDATE_PRODUCT_ID, p->id);
+        valid = validateInput(VALIDATE_PRODUCT_ID, p.id);
     } while (!valid);
 
-    // Validate Product Name
     do
     {
         printf("Enter product name: ");
-        if (fgets(p->name, MAX_NAME_LENGTH + 1, stdin) == NULL)
+        if (scanf("%49[^\n]", p.name) != 1)
         {
+            clearInputBuffer();
             printf("Error reading input.\n");
             continue;
         }
+        clearInputBuffer();
 
-        // Check if we need to clear the buffer
-        size_t len = strlen(p->name);
-        if (len > 0 && p->name[len - 1] != '\n')
-        {
-            int c;
-            while ((c = getchar()) != '\n' && c != EOF)
-                ;
-        }
-
-        // Remove newline if present
-        p->name[strcspn(p->name, "\n")] = '\0';
-
-        valid = validateInput(VALIDATE_PRODUCT_NAME, p->name);
+        valid = validateInput(VALIDATE_PRODUCT_NAME, p.name);
     } while (!valid);
 
-    // Validate Quantity
     do
     {
         printf("Enter quantity: ");
-        char quantityInput[50];
-        fgets(quantityInput, sizeof(quantityInput), stdin);
-        quantityInput[strcspn(quantityInput, "\n")] = '\0';
-
-        // Clear remaining input if user entered more than allowed
-        if (strlen(quantityInput) == sizeof(quantityInput) - 1)
-        {
-            int c;
-            while ((c = getchar()) != '\n' && c != EOF)
-                ;
-        }
-
-        // Try to convert string to integer
-        char *endptr;
-        long num = strtol(quantityInput, &endptr, 10);
-
-        // Check if conversion was successful and the entire string was a valid number
-        if (*endptr != '\0' || endptr == quantityInput)
+        if (scanf("%d", &p.quantity) != 1)
         {
             printf("Invalid input! Please enter a number.\n");
+            clearInputBuffer();
             valid = 0;
             continue;
         }
+        clearInputBuffer();
 
-        p->quantity = (int)num;
-        valid = validateInput(VALIDATE_QUANTITY, &(p->quantity));
+        valid = validateInput(VALIDATE_QUANTITY, &(p.quantity));
     } while (!valid);
 
-    // Validate Stock Name
     do
     {
         printf("Enter stock name: ");
-        if (fgets(p->stockName, MAX_STOCK_NAME_LENGTH + 1, stdin) == NULL)
+        if (scanf(" %29[^\n]", p.stockName) != 1)
         {
+            clearInputBuffer();
+
             printf("Error reading input.\n");
             continue;
         }
+        clearInputBuffer();
 
-        // Check if we need to clear the buffer
-        size_t len = strlen(p->stockName);
-        if (len > 0 && p->stockName[len - 1] != '\n')
-        {
-            int c;
-            while ((c = getchar()) != '\n' && c != EOF)
-                ;
-        }
-
-        // Remove newline if present
-        p->stockName[strcspn(p->stockName, "\n")] = '\0';
-
-        valid = validateInput(VALIDATE_STOCK_NAME, p->stockName);
+        valid = validateInput(VALIDATE_STOCK_NAME, p.stockName);
     } while (!valid);
 
-    // Validate Unit Price
     do
     {
         printf("Enter unit price: ");
-        if (scanf("%f", &(p->unitPrice)) != 1)
+        if (scanf("%f", &p.unitPrice) != 1)
         {
             printf("Invalid input! Please enter a number.\n");
-            while (getchar() != '\n')
-                ; // Clear input buffer
+            clearInputBuffer();
             valid = 0;
             continue;
         }
-        valid = validateInput(VALIDATE_UNIT_PRICE, &(p->unitPrice));
+        clearInputBuffer();
+
+        valid = validateInput(VALIDATE_UNIT_PRICE, &(p.unitPrice));
     } while (!valid);
+
+    return p;
 }
 
-// Add new product to the array
 void addProduct(Product *products, int *count)
 {
 
@@ -334,11 +287,11 @@ void addProduct(Product *products, int *count)
 
     Product newProduct;
     printf("\n=== ADD NEW PRODUCT ===\n");
-    inputProductInfo(&newProduct);
+    newProduct = inputProductInfo();
 
     for (int i = 0; i < *count; i++)
     {
-        if (strcmp(products[i].id, newProduct.id) == 0)
+        if (strcmp(products[i].id, newProduct.id) == 0) // so sanh xem id co trung khong
         {
             printf("A product with this ID already exists.\n");
             return;
@@ -346,11 +299,10 @@ void addProduct(Product *products, int *count)
     }
 
     products[*count] = newProduct;
-    (*count)++;
+    (*count)++; // Tang so luong san pham len 1
     printf("Product added successfully. Total products: %d\n", *count);
 }
 
-// Delete product by ID
 void deleteProduct(Product *products, int *count, const char *id)
 {
     for (int i = 0; i < *count; i++)
@@ -358,13 +310,13 @@ void deleteProduct(Product *products, int *count, const char *id)
         if (strcmp(products[i].id, id) == 0)
         {
             printf("Product with ID %s found. Deleting...\n", id);
-            displayProduct(&products[i]);
+            displayProduct(products[i]);
 
             for (int j = i; j < *count - 1; j++)
             {
                 products[j] = products[j + 1];
             }
-            (*count)--;
+            (*count)--; // giam so luong san pham di 1
             printf("Product deleted successfully. Total products: %d\n", *count);
             return;
         }
@@ -372,7 +324,6 @@ void deleteProduct(Product *products, int *count, const char *id)
     printf("Product with ID %s not found.\n", id);
 }
 
-// Update existing product information
 void updateProduct(Product *products, int *count, const char *id)
 {
     for (int i = 0; i < *count; i++)
@@ -380,15 +331,15 @@ void updateProduct(Product *products, int *count, const char *id)
         if (strcmp(products[i].id, id) == 0)
         {
             printf("Current product information:\n");
-            displayProduct(&products[i]);
+            displayProduct(products[i]);
 
             printf("\nEnter new information:\n");
             char oldID[MAX_ID_LENGTH];
-            strcpy(oldID, products[i].id);
+            strcpy(oldID, products[i].id); // copy id cu de giu nguyen
 
-            inputProductInfo(&products[i]);
+            Product newData = inputProductInfo(); // nhap thong tin moi
+            products[i] = newData;
             strcpy(products[i].id, oldID);
-
             printf("Product updated successfully.\n");
             return;
         }
@@ -396,7 +347,6 @@ void updateProduct(Product *products, int *count, const char *id)
     printf("Product with ID %s not found.\n", id);
 }
 
-// Display all products in a formatted table
 void viewAllProducts(Product *products, int count)
 {
     if (count == 0)
@@ -412,29 +362,26 @@ void viewAllProducts(Product *products, int count)
 
     for (int i = 0; i < count; i++)
     {
-        displayProduct(&products[i]);
+        displayProduct(products[i]);
     }
     printf("==========================================================================================================\n");
 }
 
-// Calculate total value for a single product
-float calculateTotalValue(Product *p)
+float calculateTotalValue(Product p)
 {
-    return p->quantity * p->unitPrice;
+    return p.quantity * p.unitPrice;
 }
 
-// Calculate total value of all products in stock
 float calculateTotalStockValue(Product *products, int productCount)
 {
     float total = 0.0;
     for (int i = 0; i < productCount; i++)
     {
-        total += calculateTotalValue(&products[i]);
+        total += calculateTotalValue(products[i]);
     }
     return total;
 }
 
-// Display statistics grouped by stock name
 void statisticsByStock(Product *products, int productCount)
 {
     if (productCount == 0)
@@ -478,9 +425,7 @@ void statisticsByStock(Product *products, int productCount)
     printf("-------------------------------\n");
 }
 
-// SORTING FUNCTIONS
 
-// Sort products by name using bubble sort (A-Z)
 void sortProductsByName(Product *products, int count)
 {
     for (int i = 0; i < count - 1; i++)
@@ -496,8 +441,7 @@ void sortProductsByName(Product *products, int count)
         }
     }
 }
-
-// Sort products by quantity (ascending or descending)
+// dung thuat toan bubble sort de sap xep san pham theo so luong
 void sortProductsByQuantity(Product *products, int count, int ascending)
 {
     for (int i = 0; i < count - 1; i++)
@@ -515,7 +459,6 @@ void sortProductsByQuantity(Product *products, int count, int ascending)
     }
 }
 
-// Sort products by price (ascending or descending)
 void sortProductsByPrice(Product *products, int count, int ascending)
 {
     for (int i = 0; i < count - 1; i++)
@@ -533,7 +476,6 @@ void sortProductsByPrice(Product *products, int count, int ascending)
     }
 }
 
-// Save products to text file
 void saveToFile(const char *filename, Product *products, int productCount)
 {
     FILE *file = fopen(filename, "w");
@@ -543,10 +485,8 @@ void saveToFile(const char *filename, Product *products, int productCount)
         return;
     }
 
-    // Write the number of products
     fprintf(file, "%d\n", productCount);
 
-    // Write each product's information
     for (int i = 0; i < productCount; i++)
     {
         fprintf(file, "%s\n", products[i].id);
@@ -560,7 +500,6 @@ void saveToFile(const char *filename, Product *products, int productCount)
     printf("Data saved successfully to %s (%d products).\n", filename, productCount);
 }
 
-// Load products from text file
 int loadFromFile(const char *filename, Product *products, int maxProducts)
 {
     FILE *file = fopen(filename, "r");
@@ -584,7 +523,6 @@ int loadFromFile(const char *filename, Product *products, int maxProducts)
         count = maxProducts;
     }
 
-    // Read each product's information
     for (int i = 0; i < count; i++)
     {
         if (fgets(products[i].id, MAX_ID_LENGTH, file) == NULL)
@@ -611,7 +549,6 @@ int loadFromFile(const char *filename, Product *products, int maxProducts)
     return count;
 }
 
-// Display main menu
 void displayMenu()
 {
     printf("\n");
@@ -627,12 +564,11 @@ void displayMenu()
     printf("=  7. Sort Products                          =\n");
     printf("=  8. Statistics by Stock Name               =\n");
     printf("=  9. Save to File                           =\n");
-    printf("=  10.Load from File                        =\n");
+    printf("=  10.Load from File                         =\n");
     printf("=  0. Exit                                   =\n");
     printf("==============================================\n");
 }
 
-// Display sorting submenu
 void displaySortMenu()
 {
     printf("\n");
@@ -648,7 +584,6 @@ void displaySortMenu()
     printf("==============================================\n");
 }
 
-// Get user choice with input validation
 int getUserChoice()
 {
     int choice;
@@ -664,14 +599,12 @@ int getUserChoice()
     return choice;
 }
 
-// Wait for user to press Enter
 void returnChoice()
 {
     printf("\nPress Enter to continue...");
     getchar();
 }
 
-// Display exit
 void exitProgram()
 {
     printf("\n==============================================\n");
@@ -680,7 +613,6 @@ void exitProgram()
     printf("==============================================\n");
 }
 
-// Main program
 int main()
 {
     Product products[MAX_PRODUCTS];
@@ -720,26 +652,12 @@ int main()
             break;
 
         case 5:
-        {
-            Product *productPtrs[MAX_PRODUCTS];
-            for (int i = 0; i < productCount; i++)
-            {
-                productPtrs[i] = &products[i];
-            }
-            searchProductByID(productCount, productPtrs);
-        }
-        break;
+            searchProductByID(productCount, products);
+            break;
 
         case 6:
-        {
-            Product *productPtrs[MAX_PRODUCTS];
-            for (int i = 0; i < productCount; i++)
-            {
-                productPtrs[i] = &products[i];
-            }
-            searchProductByName(productCount, productPtrs);
-        }
-        break;
+            searchProductByName(productCount, products);
+            break;
 
         case 7:
         {

@@ -1,9 +1,9 @@
 98
 1
-ACER Aspire 3
-450
-Warehouse A
-12990000.00
+Laptop Acer Nitro 1
+600
+W 2
+1000000.00
 2
 DELL Inspiron 15 3520
 320
