@@ -126,9 +126,7 @@ void searchProductByID(int productCount, Product products[])
     printf("Enter product ID to search: ");
     scanf("%14s", searchID);
     // xoa con lai trong buffer
-    scanf("%*[^\n]");
-    getchar();
-
+    clearInputBuffer();
     for (i = 0; i < productCount; i++)
     {
         if (strcmp(products[i].id, searchID) == 0)
